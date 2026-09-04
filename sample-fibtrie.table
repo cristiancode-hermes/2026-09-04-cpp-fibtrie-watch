@@ -1,0 +1,92 @@
+# Sample dump — synthetic dual-table IPv4 FIB trie (tree + triestat format)
+# Source: /proc/net/fib_trie + /proc/net/fib_triestat (host sintético)
+# Usage: ./fibtrie-watch --file sample-fibtrie.table --no-color
+
+Main:
+  +-- 0.0.0.0/0 3 0 5
+     |-- 0.0.0.0
+        /0 universe UNICAST
+     +-- 10.0.0.0/8 2 0 3
+        +-- 10.10.0.0/16 2 0 2
+           |-- 10.10.0.0
+              /16 link UNICAST
+           |-- 10.10.0.10
+              /32 host LOCAL
+     +-- 172.16.0.0/16 2 0 4
+        +-- 172.16.1.0/24 2 0 2
+           |-- 172.16.1.0
+              /24 link UNICAST
+           |-- 172.16.1.2
+              /32 host LOCAL
+        +-- 172.17.0.0/16 2 0 2
+           |-- 172.17.0.1
+              /16 link UNICAST
+     +-- 192.168.0.0/24 2 0 3
+        |-- 192.168.0.0
+           /24 link UNICAST
+        |-- 192.168.0.99
+           /32 host LOCAL
+
+Local:
+  +-- 0.0.0.0/0 3 0 5
+     |-- 0.0.0.0
+        /0 universe UNICAST
+     +-- 10.0.0.0/8 2 0 3
+        +-- 10.10.0.0/16 2 0 2
+           |-- 10.10.0.10
+              /32 host LOCAL
+     +-- 127.0.0.0/8 2 0 2
+        +-- 127.0.0.0/31 1 0 0
+           |-- 127.0.0.0
+              /8 host LOCAL
+           |-- 127.0.0.1
+              /32 host LOCAL
+        |-- 127.255.255.255
+           /32 link BROADCAST
+     +-- 172.16.1.2
+        /32 host LOCAL
+     +-- 192.168.0.99
+        /32 host LOCAL
+
+# ── triestat section (same table layout, counters in "key = value" form) ──
+
+Basic info: size of leaf: 48 bytes, size of tnode: 40 bytes.
+Main:
+	Aver depth:     2.42
+	Max depth:      4
+	Leaves:         6
+	Prefixes:       6
+	Internal nodes: 4
+	  1: 1  2: 3  3: 1  4: 1
+	Pointers: 17
+Null ptrs: 9
+Total size: 2  kB
+
+Counters:
+---------
+gets = 5862015
+backtracks = 0
+semantic match passed = 5862015
+semantic match miss = 0
+null node hit= 886411
+skipped node resize = 0
+
+Local:
+	Aver depth:     2.42
+	Max depth:      4
+	Leaves:         7
+	Prefixes:       7
+	Internal nodes: 5
+	  1: 1  2: 3  3: 1  4: 1
+	Pointers: 22
+Null ptrs: 11
+Total size: 2  kB
+
+Counters:
+---------
+gets = 5862015
+backtracks = 0
+semantic match passed = 5862015
+semantic match miss = 0
+null node hit= 886411
+skipped node resize = 0

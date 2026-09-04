@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fibtrie-watch</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1e1e2e; font-family: 'Fira Code', monospace; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 40px 20px; }
+  .terminal {
+    background: #181825;
+    border-radius: 12px;
+    padding: 24px 28px;
+    color: #cdd6f4;
+    font-size: 13px;
+    line-height: 1.55;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    max-width: 960px;
+    width: 100%;
+  }
+  .cyan { color: #89dceb; }
+  .green { color: #a6e3a1; }
+  .yellow { color: #f9e2af; }
+  .red { color: #f38ba8; }
+  .dim { color: #6c7086; }
+  .magenta { color: #cba6f7; }
+  .blue { color: #89b4fa; }
+  .bold { font-weight: 600; }
+  .section-title { color: #cdd6f4; font-weight: 600; margin-top: 4px; margin-bottom: 6px; }
+  .agg-row { display: flex; gap: 18px; margin-bottom: 8px; flex-wrap: wrap; }
+  .agg-label { color: #6c7086; font-size: 10.5px; }
+  .agg-value { color: #cdd6f4; font-size: 14px; font-weight: 600; }
+  table { border-collapse: collapse; margin-top: 10px; width: 100%; font-size: 12px; }
+  th { color: #6c7086; text-align: left; font-weight: 400; padding: 2px 12px 2px 0; border-bottom: 1px solid #313244; }
+  td { padding: 2px 12px 2px 0; white-space: nowrap; }
+  .cmd { background: #11111b; border-radius: 8px; padding: 12px 16px; margin-top: 14px; font-size: 12px; }
+  .cmd .line { color: #a6e3a1; }
+  .notes { margin-top: 12px; color: #6c7086; font-size: 11px; line-height: 1.55; }
+  .prompt { margin-top: 16px; color: #a6e3a1; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="terminal">
+  <div class="section-title">-- IPv4 FIB Patricia trie  /proc/net/fib_trie + fib_triestat --</div>
+  <div class="agg-row">
+    <div><div class="agg-label">tables</div><div class="agg-value bold cyan">2</div></div>
+    <div><div class="agg-label">leaves</div><div class="agg-value">13</div></div>
+    <div><div class="agg-label">depth</div><div class="agg-value bold yellow">4</div></div>
+    <div><div class="agg-label">avg</div><div class="agg-value">2.42</div></div>
+    <div><div class="agg-label">pointers</div><div class="agg-value">39</div></div>
+    <div><div class="agg-label">null_ptrs</div><div class="agg-value">20</div></div>
+    <div><div class="agg-label">size</div><div class="agg-value">4 kB</div></div>
+  </div>
+  <div class="agg-row">
+    <div><span class="agg-label">source: </span><span class="dim">demo</span>
+      <span class="agg-label">&nbsp; shown </span><span>12 / 13</span></div>
+  </div>
+  <table>
+    <tr><th>TABLE</th><th>DEPTH</th><th>AVG</th><th>LEAVES</th><th>PREFIXES</th><th>INT</th><th>PTRS</th><th>NULLP</th><th>KB</th><th>HIST</th></tr>
+    <tr><td class="cyan bold">Main</td><td class="yellow">4</td><td>2.42</td><td>6</td><td>6</td><td>4</td><td>17</td><td>9</td><td>2</td><td class="dim">1:1 2:1 3:1 4:1</td></tr>
+    <tr><td class="cyan bold">Local</td><td class="yellow">4</td><td>2.42</td><td>7</td><td>7</td><td>5</td><td>22</td><td>11</td><td>2</td><td class="dim">1:1 2:1 3:1 4:1</td></tr>
+  </table>
+  <div class="section-title" style="margin-top:16px">-- leaf prefixes (non-LOCAL) --</div>
+  <table>
+    <tr><th>PREFIX</th><th>TYPE</th><th>DEPTH</th></tr>
+    <tr><td class="bold">0.0.0.0/0</td><td class="cyan">UNICAST</td><td>5</td></tr>
+    <tr><td class="bold">10.10.0.0/16</td><td class="cyan">UNICAST</td><td>11</td></tr>
+    <tr><td class="bold">172.16.1.0/24</td><td class="cyan">UNICAST</td><td>11</td></tr>
+    <tr><td class="bold">172.17.0.1/16</td><td class="cyan">UNICAST</td><td>11</td></tr>
+    <tr><td class="bold">192.168.0.0/24</td><td class="cyan">UNICAST</td><td>8</td></tr>
+    <tr><td class="bold">127.255.255.255/32</td><td class="yellow">BROADCAST</td><td>8</td></tr>
+  </table>
+  <div class="section-title" style="margin-top:16px">-- LOCAL host addresses --</div>
+  <div class="agg-row" style="margin-top:6px">
+    <span class="green">10.10.0.10/32</span><span class="dim">&nbsp;&nbsp;LOCAL</span>
+    <span class="green">172.16.1.2/32</span><span class="dim">&nbsp;&nbsp;LOCAL</span>
+    <span class="green">127.0.0.1/32</span><span class="dim">&nbsp;&nbsp;LOCAL</span>
+    <span class="green">192.168.0.99/32</span><span class="dim">&nbsp;&nbsp;LOCAL</span>
+  </div>
+  <div class="cmd">
+    <div class="line">$ g++ -std=c++23 -O2 -Wall -Wextra src/main.cpp -o fibtrie-watch</div>
+    <div class="line">$ ./fibtrie-watch --demo</div>
+    <div class="line">$ ./fibtrie-watch --file sample-fibtrie.table --no-color</div>
+    <div class="line">$ ./fibtrie-watch --selftest   <span class="dim"># 44 passed, 0 failed</span></div>
+  </div>
+  <div class="notes">
+    -- gets 5,862,015 · matches 5,862,015 · null_hit 886,411 · backtracks 0<br>
+    -- Patricia trie: radix tree con compresión de caminos (bitwise) · Main = rutas, Local = direcciones del host
+  </div>
+  <div class="prompt">$ █</div>
+</div>
+</body>
+</html>
